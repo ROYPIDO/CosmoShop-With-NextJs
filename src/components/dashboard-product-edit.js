@@ -1,13 +1,15 @@
 "use client";
-import { createProductAction } from "@/actions/product-actions";
+import { updateProductAction } from "@/actions/product-actions";
 import React from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import { useFormState } from "react-dom";
 
-const DashboardProductNew = () => {
+const DashboardProductEdit = ({ product }) => {
 	const initialState = { ok: false, message: "", errors: {} };
 
-	const [state, dispatch] = useFormState(createProductAction, initialState);
+	const [state, dispatch] = useFormState(updateProductAction, initialState);
+
+	console.log(product)
 
 	return (
 		<>
@@ -20,11 +22,13 @@ const DashboardProductNew = () => {
 			) : null}
 
 			<Form action={dispatch}>
+				<input type="hidden" name="id" defaultValue={product.id}/>
 				<Form.Group className="mb-3" controlId="title">
 					<Form.Label>Title</Form.Label>
 					<Form.Control
 						type="text"
 						name="title"
+						defaultValue={product.title}
 						isInvalid={!!state.errors.title}
 					/>
 					<Form.Control.Feedback type="invalid">
@@ -37,6 +41,7 @@ const DashboardProductNew = () => {
 					<Form.Control
 						type="number"
 						name="price"
+						defaultValue={product.price}
 						isInvalid={!!state.errors.price}
 					/>
 					<Form.Control.Feedback type="invalid">
@@ -49,6 +54,7 @@ const DashboardProductNew = () => {
 					<Form.Control
 						type="number"
 						name="discounted"
+						defaultValue={product.discounted}
 						isInvalid={!!state.errors.discounted}
 					/>
 					<Form.Control.Feedback type="invalid">
@@ -61,6 +67,7 @@ const DashboardProductNew = () => {
 					<Form.Select
 						aria-label="Select a category"
 						name="category"
+						defaultValue={product.category}
 						isInvalid={!!state.errors.category}
 					>
 						<option value="">Select a category</option>
@@ -73,10 +80,10 @@ const DashboardProductNew = () => {
 					</Form.Control.Feedback>
 				</Form.Group>
 
-				<Button type="submit">Create</Button>
+				<Button type="submit">Update</Button>
 			</Form>
 		</>
 	);
 };
 
-export default DashboardProductNew;
+export default DashboardProductEdit;

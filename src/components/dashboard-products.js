@@ -1,7 +1,8 @@
 import Link from "next/link";
 import React from "react";
-import { Table } from "react-bootstrap";
-import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+import { Button, Table } from "react-bootstrap";
+import { FaEdit, FaPlus } from "react-icons/fa";
+import DeleteProductButton from "./delete-product-button";
 
 const DashboardProducts = ({ products }) => {
 	return (
@@ -13,7 +14,10 @@ const DashboardProducts = ({ products }) => {
 					<th>Category</th>
 					<th>Price</th>
 					<th className="text-center">
-						<Link href="/dashboard/products/new" className="btn btn-warning">
+						<Link
+							href="/dashboard/products/new"
+							className="btn btn-warning"
+						>
 							<FaPlus /> New
 						</Link>
 					</th>
@@ -27,8 +31,11 @@ const DashboardProducts = ({ products }) => {
 						<td>{item.category}</td>
 						<td>${item.price}</td>
 						<td className="text-center">
-							<FaEdit />
-							<FaTrash />
+							<Button variant="info" as={Link} className="btn btn-link text-dark" href={`/dashboard/products/${item.id}`}>
+								<FaEdit />
+							</Button>
+
+							<DeleteProductButton productId={item.id} />
 						</td>
 					</tr>
 				))}
