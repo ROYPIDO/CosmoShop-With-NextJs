@@ -3,12 +3,22 @@ import Link from "next/link";
 import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import menu from "@/helpers/data/main-menu.json";
-import { usePathname } from "next/navigation";
-import logo from "../../public/images/logo.png"
+import logo from "../../public/images/logo.png";
 import Image from "next/image";
+import { signOut, useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
+
 
 const Header = () => {
 	const pathname = usePathname();
+	const { data: session } = useSession();
+
+	const handleLogout = () => {
+		const res = confirm("Are you sure to logout?");
+		if (!res) return;
+
+		signOut({ callbackUrl: "/" });
+	};
 
 	return (
 		<Navbar
@@ -19,7 +29,7 @@ const Header = () => {
 		>
 			<Container>
 				<Navbar.Brand href="/" as={Link}>
-					<Image src={logo} alt="Cosmo Shop"/>
+					<Image src={logo} alt="Cosmo Shop" />
 				</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
@@ -30,13 +40,24 @@ const Header = () => {
 								href={item.url}
 								as={Link}
 								prefetch={item.prefecth}
-								className={pathname === item.url ? "active" : ""}
+								className={
+									pathname === item.url ? "active" : ""
+								}
 							>
 								{item.title}
 							</Nav.Link>
 						))}
 					</Nav>
-					<Link href="/dashboard">Dashboard</Link>
+					{session ? (
+						<>
+							<Link href="/dashboard">Dashboard</Link> |
+							<a href="#" onClick={handleLogout}>
+								Logout
+							</a>
+						</>
+					) : (
+						<Link href="/login">Login</Link>
+					)}
 				</Navbar.Collapse>
 			</Container>
 		</Navbar>

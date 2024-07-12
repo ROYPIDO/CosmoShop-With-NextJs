@@ -6,9 +6,15 @@ import { API_URL } from "@/helpers/config";
 import { notFound } from "next/navigation";
 import React from "react";
 
-export const metadata = {
-	title: "Product Details",
-	description: "Our company supports ...",
+export const generateMetadata = async ({params}) => {
+	const res = await fetch(`${API_URL}/products/${params.id}`);
+	const data = await res.json();
+
+	return {
+		title: data.title
+	}
+
+
 };
 
 const Page = async ({ params }) => {
@@ -18,7 +24,7 @@ const Page = async ({ params }) => {
 	const fetchProduct = (
 		await fetch(`${API_URL}/products/${productId}`)
 	).json();
-	
+
 	const fetchProducts = (await fetch(`${API_URL}/products`)).json();
 
 	const [product, products] = await Promise.all([
@@ -30,7 +36,7 @@ const Page = async ({ params }) => {
 
 	return (
 		<>
-			<PageHeader title="Product Details" />
+			<PageHeader title={product.title} />
 			<Spacer height={50} />
 			<ProductDetails product={product} />
 			<Spacer />

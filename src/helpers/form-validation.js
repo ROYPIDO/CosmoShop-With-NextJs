@@ -11,3 +11,7 @@ export const transformYupErrors = (errors) => {
 		errors: errObject,
 	};
 };
+
+export const transformFormDataToJson = (formData) => {
+	return Object.fromEntries(formData.entries());
+};

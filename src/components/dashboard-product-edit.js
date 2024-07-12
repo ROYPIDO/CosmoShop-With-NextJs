@@ -9,8 +9,6 @@ const DashboardProductEdit = ({ product }) => {
 
 	const [state, dispatch] = useFormState(updateProductAction, initialState);
 
-	console.log(product)
-
 	return (
 		<>
 			{!state.ok && state.message ? (

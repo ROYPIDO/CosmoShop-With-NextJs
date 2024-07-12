@@ -1,6 +1,6 @@
 "use server";
 import { API_URL } from "@/helpers/config";
-import { transformYupErrors } from "@/helpers/form-validation";
+import { transformFormDataToJson, transformYupErrors } from "@/helpers/form-validation";
 import { revalidatePath } from "next/cache";
 import * as Yup from "yup";
 
@@ -13,7 +13,7 @@ const FormSchema = Yup.object({
 
 export const createProductAction = async (prevState, formData) => {
 	// FormData formatinda gelen formData degiskeni JS object e cevirilir
-	const fields = Object.fromEntries(formData.entries());
+	const fields = transformFormDataToJson(formData);
 
 	try {
 		//Validation
@@ -30,9 +30,14 @@ export const createProductAction = async (prevState, formData) => {
 
 		if (!res.ok) throw new Error("Something went wrong");
 
+		const data = await res.json();
+
 		// Revalidation
 		revalidatePath("/products");
+		revalidatePath(`/products/${data.id}`);
+
 		revalidatePath("/dashboard/products");
+		revalidatePath(`/dashboard/products/${data.id}`);
 
 		return { ok: true, message: "Product was created", errors: {} };
 	} catch (err) {
@@ -50,14 +55,14 @@ export const createProductAction = async (prevState, formData) => {
 
 export const updateProductAction = async (prevState, formData) => {
 	// FormData formatinda gelen formData degiskeni JS object e cevirilir
-	const fields = Object.fromEntries(formData.entries());
-    console.log(fields)
+	const fields = transformFormDataToJson(formData);
+
 	try {
 		//Validation
 		FormSchema.validateSync(fields, { abortEarly: false });
 
 		//Mutation
-		const res = await fetch(`${API_URL}/products/${1}`, {
+		const res = await fetch(`${API_URL}/products/${fields.id}`, {
 			method: "put",
 			body: JSON.stringify(fields),
 			headers: {
@@ -69,7 +74,10 @@ export const updateProductAction = async (prevState, formData) => {
 
 		// Revalidation
 		revalidatePath("/products");
+		revalidatePath(`/products/${fields.id}`);
+
 		revalidatePath("/dashboard/products");
+		revalidatePath(`/dashboard/products/${fields.id}`);
 
 		return { ok: true, message: "Product was updated", errors: {} };
 	} catch (err) {
@@ -98,13 +106,11 @@ export const deleteProductAction = async (id) => {
 		revalidatePath("/products");
 		revalidatePath("/dashboard/products");
 
-        return {
+		return {
 			ok: true,
 			message: "Product was deleted",
 			errors: {},
 		};
-
-
 	} catch (err) {
 		return {
 			ok: false,
