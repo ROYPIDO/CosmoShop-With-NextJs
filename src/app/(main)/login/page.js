@@ -4,8 +4,9 @@ import Spacer from '@/components/spacer';
 import React from 'react'
 
 export const metadata = {
-	title: "Login",
-	description: "Our company supports ...",
+  title: {
+    absolute: "Dashboard",
+  },
 };
 
 const Page = () => {

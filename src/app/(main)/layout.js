@@ -1,16 +1,20 @@
-import Footer from '@/components/footer'
-import Header from '@/components/header'
-import React from 'react'
-import { Container } from 'react-bootstrap'
+import Header from "../../components/header";
+import Footer from "../../components/footer";
+import "../../global.scss";
 
-const Layout = ({children}) => {
+export const metadata = {
+  title: "CosmoShop",
+  description: "Modern UI E-Commerce Template",
+};
+
+export default function RootLayout({ children }) {
   return (
-    <>
-        <Header/>
-        <Container className="flex-grow-1">{children}</Container>
-        <Footer/>
-    </>
-  )
+    <html lang="en">
+      <body>
+        <Header />
+        <main>{children}</main>
+        <Footer />
+      </body>
+    </html>
+  );
 }
-
-export default Layout
