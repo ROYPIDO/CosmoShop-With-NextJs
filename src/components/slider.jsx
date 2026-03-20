@@ -8,7 +8,7 @@ export default function Slider({ className="" }){
         <h1 className="title">CosmoShop</h1>
         <p className="subtitle">
           A tiny, elegant storefront. Clean dark UI, readable typography,
-          and product cards that don't shout—just shine.
+          and product cards that don&apos;t shout—just shine.
         </p>
         <div className="actions">
           <Link href="/products" className="btn btn-primary">Explore products</Link>

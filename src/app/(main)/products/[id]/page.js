@@ -1,47 +1,38 @@
 import PageHeader from "@/components/page-header";
 import ProductDetails from "@/components/product-details";
 import ProductsInSameCategory from "@/components/products-in-same-category";
-import Spacer from "@/components/spacer";
 import { API_URL } from "@/helpers/config";
 import { notFound } from "next/navigation";
-import React from "react";
 
-export const generateMetadata = async ({params}) => {
+export const generateMetadata = async ({ params }) => {
 	const res = await fetch(`${API_URL}/products/${params.id}`);
+	if (!res.ok) return { title: "Product Not Found" };
 	const data = await res.json();
-
-	return {
-		title: data.title
-	}
-
-
+	return { title: data.title };
 };
 
 const Page = async ({ params }) => {
 	const productId = params.id;
 	if (!productId) notFound();
 
-	const fetchProduct = (
-		await fetch(`${API_URL}/products/${productId}`)
-	).json();
-
-	const fetchProducts = (await fetch(`${API_URL}/products`)).json();
-
-	const [product, products] = await Promise.all([
-		fetchProduct,
-		fetchProducts,
+	const [productRes, productsRes] = await Promise.all([
+		fetch(`${API_URL}/products/${productId}`),
+		fetch(`${API_URL}/products?limit=12`),
 	]);
 
-	if (!product) notFound();
+	if (!productRes.ok) notFound();
+
+	const product = await productRes.json();
+	const { products = [] } = await productsRes.json();
 
 	return (
 		<>
 			<PageHeader title={product.title} />
-			<Spacer height={50} />
-			<ProductDetails product={product} />
-			<Spacer />
-			<ProductsInSameCategory products={products} />
-			<Spacer />
+			<div className="container-narrow py-4">
+				<ProductDetails product={product} />
+				<hr style={{ borderColor: "var(--color-border)", margin: "3rem 0" }} />
+				<ProductsInSameCategory products={products} />
+			</div>
 		</>
 	);
 };

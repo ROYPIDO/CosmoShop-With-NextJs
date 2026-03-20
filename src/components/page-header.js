@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "./page-header.module.scss";
 
-const PageHeader = ({ title }) => {
+const PageHeader = ({ title, subtitle }) => {
 	return (
-		<h1 className={styles.header}>
-			<span>{title}</span>
-		</h1>
+		<div className={styles.pageHeader}>
+			<h1>{title}</h1>
+			{subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+		</div>
 	);
 };
 

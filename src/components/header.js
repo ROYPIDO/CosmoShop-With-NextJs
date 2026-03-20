@@ -1,20 +1,38 @@
 "use client";
 import Link from "next/link";
-import styles from "./Header.module.scss";
+import { usePathname } from "next/navigation";
+import styles from "./header.module.scss";
+
+const navLinks = [
+	{ href: "/", label: "Home" },
+	{ href: "/products", label: "Products" },
+	{ href: "/about", label: "About" },
+	{ href: "/contact", label: "Contact" },
+	{ href: "/login", label: "Login" },
+];
 
 export default function Header() {
-  return (
-    <header className={styles.header}>
-      <div className={styles.logo}>COSMO<span>SHOP</span></div>
-      <nav>
-        <ul>
-          <li><Link href="/">Home</Link></li>
-          <li><Link href="/products">Products</Link></li>
-          <li><Link href="/about">About</Link></li>
-          <li><Link href="/contact">Contact</Link></li>
-          <li><Link href="/login">Login</Link></li>
-        </ul>
-      </nav>
-    </header>
-  );
+	const pathname = usePathname();
+
+	return (
+		<header className={styles.header}>
+			<div className={styles.logo}>
+				COSMO<span>SHOP</span>
+			</div>
+			<nav>
+				<ul>
+					{navLinks.map((link) => (
+						<li key={link.href}>
+							<Link
+								href={link.href}
+								className={pathname === link.href ? styles.active : ""}
+							>
+								{link.label}
+							</Link>
+						</li>
+					))}
+				</ul>
+			</nav>
+		</header>
+	);
 }

@@ -1,21 +1,19 @@
 
 import DashboardMenu from "@/components/dashboard-menu";
-import React from "react";
 import { Container } from "react-bootstrap";
 
 export const metadata = {
 	title: {
-		absolute: "Dashboard",
+		default: "Dashboard",
+		template: "%s | Dashboard",
 	},
 };
 
-export default function RootLayout({ children }) {
+export default function DashboardLayout({ children }) {
 	return (
-		<html lang="en">
-			<body>
-				<DashboardMenu />
-				<Container className="flex-grow-1">{children}</Container>
-			</body>
-		</html>
+		<>
+			<DashboardMenu />
+			<Container className="py-4">{children}</Container>
+		</>
 	);
 }

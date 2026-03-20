@@ -1,1 +1,1 @@
-export const API_URL = "https://664e4050fafad45dfadf89d5.mockapi.io/api/v1"
+export const API_URL = "https://dummyjson.com"

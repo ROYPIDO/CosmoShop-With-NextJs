@@ -1,23 +1,19 @@
 import LoginForm from '@/components/login-form';
-import PageHeader from '@/components/page-header'
-import Spacer from '@/components/spacer';
-import React from 'react'
+import PageHeader from '@/components/page-header';
 
 export const metadata = {
-  title: {
-    absolute: "Dashboard",
-  },
+  title: "Login",
 };
 
 const Page = () => {
   return (
     <>
-      <PageHeader title="Login"/>
-      <Spacer height={50}/>
-      <LoginForm/>
-      <Spacer/>
+      <PageHeader title="Sign In" subtitle="Welcome back. Enter your credentials to continue." />
+      <div className="container-narrow py-4">
+        <LoginForm />
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;
